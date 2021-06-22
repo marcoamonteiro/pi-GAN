@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9
 
 ## Training a Model
 
-The main training script can be found in train.py.
+The main training script can be found in train.py. Majority of hyperparameters for training and evaluation are set in the curriculums.py file. (see file for more details) We provide curriculums recommended for CelebA, Cats, and CARLA.
 
 ##### Relevant Flags:
 
@@ -25,7 +25,7 @@ Set the output directory:
 Set the model loading directory:
 `--load_dir=[load directory]`
 
-Set the current training curriculum (see more details in curriculums.py):
+Set the current training curriculum:
 `--curriculum=[curriculum]`
 
 Set the port for distributed training:
@@ -34,11 +34,11 @@ Set the port for distributed training:
 
 ##### To start training:
 
-On one GPU:
-`CUDA_VISIBLE_DEVICES=0 python3 train.py --flag=value --flag=value ...`
+On one GPU for CelebA:
+`CUDA_VISIBLE_DEVICES=0 python3 train.py --curriculum CelebA --output_dir celebAOutputDir`
 
 On multiple GPUs, simply list cuda visible devices in a comma-separated list:
-`CUDA_VISIBLE_DEVICES=1,3 python3 train.py --flag=value --flag=value ...`
+`CUDA_VISIBLE_DEVICES=1,3 python3 train.py --curriculum CelebA --output_dir celebAOutputDir`
 
 To continue training from another run specify the `--load_dir=path/to/directory` flag. 
 
@@ -48,28 +48,28 @@ To continue training from another run specify the `--load_dir=path/to/directory`
 To generate real images for evaluation run
 `python fid_evaluation --dataset CelebA --img_size 128 --num_imgs 8000`.
 To calculate fid/kid/inception scores run
-`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`.
+`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --curriculum CelebA --num_images 8000`.
 
 
 #### Rendering Images
-`python render_multiview_images.py path/to/generator.pth --seeds 0 1 2 3`
+`python render_multiview_images.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
 For best visual results, load the EMA parameters, use truncation, increase the resolution (e.g. to 512 x 512) and increase the number of depth samples (e.g. to 24 or 36).
 
 #### Rendering Videos
-`python render_video.py path/to/generator.pth --seeds 0 1 2 3`
+`python render_video.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
 You can pass the flag `--lock_view_dependence` to remove view dependent effects. This can help mitigate distracting visual artifacts such as shifting eyebrows. However, locking view dependence may lower the visual quality of images (edges may be blurrier etc.)
 
 #### Rendering Videos Interpolating between faces
-`python render_video_interpolation.py path/to/generator.pth --seeds 0 1 2 3`
+`python render_video_interpolation.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
 #### Extracting 3D Shapes
 
-`python3 shape_extraction.py path/to/generator.pth --seed 0`
+`python3 shape_extraction.py path/to/generator.pth --curriculum CelebA --seed 0`
 
 ## Pretrained Models
-We provide pretrained models for CelebA, Cats, and CARLA models
+We provide pretrained models for CelebA, Cats, and CARLA.
 
 CelebA: https://drive.google.com/file/d/1bRB4-KxQplJryJvqyEa8Ixkf_BVm4Nn6/view?usp=sharing
 
@@ -77,7 +77,7 @@ Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp
 
 CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
-All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. All evaluation scripts will by default load the EMA from the file called `ema.pth` in the same directory as the generator.pth file.
+All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. All evaluation scripts will by default load the EMA from the file named `ema.pth` in the same directory as the generator.pth file.
 
 ## Training Tips
 
