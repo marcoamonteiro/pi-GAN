@@ -337,8 +337,10 @@ def train(rank, world_size, opt):
                         with torch.cuda.amp.autocast():
                             copied_metadata = copy.deepcopy(metadata)
                             copied_metadata['img_size'] = 128
+                            copied_metadata['h_stddev'] = copied_metadata['v_stddev'] = 0
+                            copied_metadata['psi'] = 0.7
                             gen_imgs = generator_ddp.module.staged_forward(torch.randn_like(fixed_z).to(device),  **copied_metadata)[0]
-                    save_image(gen_imgs[:25], os.path.join(opt.output_dir, f"{discriminator.step}_random_ema.png"), nrow=5, normalize=True)
+                    save_image(gen_imgs[:25], os.path.join(opt.output_dir, f"{discriminator.step}_random.png"), nrow=5, normalize=True)
 
                     ema.restore(generator_ddp.parameters())
 

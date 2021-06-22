@@ -27,7 +27,7 @@ parser.add_argument('--lock_view_dependence', action='store_true')
 parser.add_argument('--image_size', type=int, default=256)
 parser.add_argument('--ray_steps', type=int, default=36)
 parser.add_argument('--num_frames', type=int, default=36)
-parser.add_argument('--curriculum', type=str, default='CELEBA')
+parser.add_argument('--curriculum', type=str, default='CelebA')
 parser.add_argument('--trajectory', type=str, default='front')
 opt = parser.parse_args()
 

@@ -45,10 +45,10 @@ To continue training from another run specify the `--load_dir=path/to/directory`
 ## Model Results and Evaluation
 
 #### Evaluation Metrics
-To generate real images for evaluation:
-`python fid_evaluation --dataset CelebA --img_size 128 --num_imgs 8000`
-To calculate fid/kid/inception scores:
-`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`
+To generate real images for evaluation run
+`python fid_evaluation --dataset CelebA --img_size 128 --num_imgs 8000`.
+To calculate fid/kid/inception scores run
+`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`.
 
 
 #### Rendering Images
