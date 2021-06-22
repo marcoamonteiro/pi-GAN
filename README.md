@@ -33,7 +33,9 @@ On multiple GPUs, simply list cuda visible devices in a comma-separated list:
 __To continue training from another run:__
 Specify the `--load_dir=path/to/directory` flag. See the "Relevant Flags" section for details.
 
-#### Evaluating a Model
+### Model Results and Evaluation
+
+#### Evaluation Metrics
 `python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`
 
 #### Rendering Images
@@ -58,14 +60,14 @@ Extract the 3D shape of a scene by running the following:
 #### Inverse Rendering
 Need to clean this up. Let me know if you want the messy code.
 
-#### Pretrained Models
+### Pretrained Models
 Here are pretrained models for CelebA, Cats, and CARLA models
 
 CelebA: 
 Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp=sharing
 CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
-All zipped model files contain 
+All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. 
 
 #### Changes/additions since original implementation
 
