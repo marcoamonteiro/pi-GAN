@@ -78,6 +78,15 @@ This will export the scene as a .mrc file. Visualize the shape by downloading Ch
 #### Inverse Rendering
 Need to clean this up. Let me know if you want the messy code.
 
+#### Pretrained Models
+Here are pretrained models for CelebA, Cats, and CARLA models
+
+CelebA: 
+Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp=sharing
+CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
+
+All zipped model files contain 
+
 #### Changes/additions since original implementation
 
 1. Added experimental pose identity loss. Controlled by pos_lambda in the curriculum, helps ensure generated scenes share the same canonical pose. Empirically, it seems to improve 3D models, but may introduce a minor decrease in image quality scores.
