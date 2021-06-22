@@ -1,5 +1,9 @@
 # π-GAN Prerelease Code
 
+
+https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9621-1e176db59352.mp4
+
+
 **This code has not yet been publicly released. PLEASE DO NOT SHARE**
 
 ### Training a Model
