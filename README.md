@@ -25,7 +25,7 @@ Set the output directory:
 Set the model loading directory:
 `--load_dir=[load directory]`
 
-Set the current training curriculum:
+Set the current training curriculum (see more details in curriculums.py):
 `--curriculum=[curriculum]`
 
 Set the port for distributed training:
@@ -45,7 +45,11 @@ To continue training from another run specify the `--load_dir=path/to/directory`
 ## Model Results and Evaluation
 
 #### Evaluation Metrics
+To generate real images for evaluation:
+`python fid_evaluation --dataset CelebA --img_size 128 --num_imgs 8000`
+To calculate fid/kid/inception scores:
 `python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`
+
 
 #### Rendering Images
 `python render_multiview_images.py path/to/generator.pth --seeds 0 1 2 3`
@@ -73,9 +77,9 @@ Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp
 
 CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
-All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999.
+All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. 
 
-#### Changes/additions since original implementation
+## Changes/additions since original implementation
 
 1. Added experimental pose identity loss. Controlled by pos_lambda in the curriculum, helps ensure generated scenes share the same canonical pose. Empirically, it seems to improve 3D models, but may introduce a minor decrease in image quality scores.
 
@@ -86,7 +90,7 @@ All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema
 4. Tweaks to hyperparmeters, e.g. learning rate and initialization. Should result in improved evaluation metrics.
 
 
-### Training Tips
+## Training Tips
 
 If you have the resources, increasing the number of samples (steps) per ray will dramatically increase the quality of your 3D shapes. If you're looking for good shapes, e.g. for CelebA, try increasing num_steps and moving the back plane (ray_end) to allow the model to move the background back and capture the full head.
 
