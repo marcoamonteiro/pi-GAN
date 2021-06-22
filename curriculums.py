@@ -82,21 +82,19 @@ def extract_metadata(curriculum, current_step):
     return return_dict
 
 
-"""Recommended curriculum for CelebA. Trained on one RTX 8000. If training on two RTX 6000's, halve the batch size."""
 CelebA = {
-    0: {'batch_size': 28 * 2, 'num_steps': 12, 'img_size': 64, 'batch_split': 2, 'gen_lr': 2e-5, 'disc_lr': 2e-4},
-    45000: {'batch_size': 28 * 2, 'num_steps': 12, 'img_size': 64, 'batch_split': 2, 'gen_lr': 6e-5, 'disc_lr': 2e-4},
+    0: {'batch_size': 28 * 2, 'num_steps': 12, 'img_size': 64, 'batch_split': 2, 'gen_lr': 6e-5, 'disc_lr': 2e-4},
     int(200e3): {},
 
     'fov': 12,
     'ray_start': 0.88,
     'ray_end': 1.12,
     'fade_steps': 10000,
-    'h_stddev': 0.4,
-    'v_stddev': 0.2,
+    'h_stddev': 0.3,
+    'v_stddev': 0.155,
     'h_mean': math.pi*0.5,
     'v_mean': math.pi*0.5,
-    'sample_dist': 'truncated_gaussian',
+    'sample_dist': 'gaussian',
     'topk_interval': 2000,
     'topk_v': 0.6,
     'betas': (0, 0.9),
@@ -107,18 +105,17 @@ CelebA = {
     'grad_clip': 10,
     'model': 'SPATIALSIRENBASELINE',
     'generator': 'ImplicitGenerator3d',
-    'discriminator': 'StridedDiscriminator',
+    'discriminator': 'CCSEncoderDiscriminator',
     'dataset': 'CelebA',
     'clamp_mode': 'relu',
     'z_dist': 'gaussian',
     'hierarchical_sample': True,
     'z_lambda': 0,
-    'pos_lambda': 0,
+    'pos_lambda': 15,
     'last_back': False,
     'eval_last_back': True,
 }
 
-"""Curriculum used to train Carla."""
 CARLA = {
     0: {'batch_size': 30, 'num_steps': 48, 'img_size': 32, 'batch_split': 1, 'gen_lr': 4e-5, 'disc_lr': 4e-4},
     int(10e3): {'batch_size': 14, 'num_steps': 48, 'img_size': 64, 'batch_split': 2, 'gen_lr': 2e-5, 'disc_lr': 2e-4},
@@ -139,7 +136,7 @@ CARLA = {
     'betas': (0, 0.9),
     'unique_lr': False,
     'weight_decay': 0,
-    'r1_lambda': 1,
+    'r1_lambda': 10,
     'latent_dim': 256,
     'grad_clip': 1,
     'model': 'TALLSIREN',

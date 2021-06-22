@@ -25,7 +25,7 @@ parser.add_argument('--lock_view_dependence', action='store_true')
 parser.add_argument('--image_size', type=int, default=256)
 parser.add_argument('--ray_steps', type=int, default=36)
 parser.add_argument('--num_frames', type=int, default=36)
-parser.add_argument('--curriculum', type=str, default='CELEBA')
+parser.add_argument('--curriculum', type=str, default='CelebA')
 parser.add_argument('--trajectory', type=str, default='front')
 parser.add_argument('--psi', type=float, default=0.7)
 opt = parser.parse_args()
@@ -75,9 +75,8 @@ if opt.trajectory == 'front':
     for t in np.linspace(0, 1, curriculum['num_frames']):
         pitch = 0.2 * np.cos(t * 2 * math.pi) + math.pi/2
         yaw = 0.4 * np.sin(t * 2 * math.pi) + math.pi/2
-        fov = 30
 
-        fov = 30 + 5 + np.sin(t * 2 * math.pi) * 5
+        fov = curriculum['fov'] + 5 + np.sin(t * 2 * math.pi) * 5
 
         trajectory.append((t, pitch, yaw, fov))
 elif opt.trajectory == 'orbit':

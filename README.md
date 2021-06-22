@@ -1,96 +1,100 @@
-# π-GAN Prerelease Code
+# π-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis
+### [Project Page](https://marcoamonteiro.github.io/pi-GAN-website/) | [Paper](https://arxiv.org/pdf/2012.00926.pdf) | [Data]()
+[Eric Ryan Chan](https://ericryanchan.github.io/about.html)\*,
+[Marco Monteiro]()\*,
+[Petr Kellnhofer](https://kellnhofer.xyz/),
+[Jiajun Wu](https://jiajunwu.com/),
+[Gordon Wetzstein](https://stanford.edu/~gordonwz/)<br>
+\*denotes equal contribution
 
-**This code has not yet been publicly released. PLEASE DO NOT SHARE**
+This is the official implementation of the paper "π-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis".
 
-### Training a Model
+π-GAN is a novel generative model for high-quality 3D aware image synthesis.
 
-The main training script can be found in train.py, and may be called via cli.
+https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9621-1e176db59352.mp4
+
+## Training a Model
+
+The main training script can be found in train.py. Majority of hyperparameters for training and evaluation are set in the curriculums.py file. (see file for more details) We provide recommended curriculums for CelebA, Cats, and CARLA.
 
 ##### Relevant Flags:
 
 Set the output directory:
 `--output_dir=[output directory]`
---Default: `output/spatialsirenbaseline`
---Controls where the training script will write images, models, and logging information to.
 
-Set the loading directory:
+Set the model loading directory:
 `--load_dir=[load directory]`
---Default: `None`
---If set, controls where the training script will look for models to continue runs from. This directory should be `--output_dir` from the prior run. If not set, will begin a new run.
 
-Set the current curriculum:
+Set the current training curriculum:
 `--curriculum=[curriculum]`
---Default: `SPATIALSIRENBASELINE`
---Curriculums control model-specific variables such as learning rate, regularization parameters, loss functions, etc...
 
-Set the port:
+Set the port for distributed training:
 `--port=[port]`
---Default: `12355`
---Sets the internal port for distributed training. Must each be unique if running multiple tests simultaneously.
 
 
 ##### To start training:
 
-On one GPU:
-`CUDA_VISIBLE_DEVICES=0 python3 train.py --flag=value --flag=value ...`
+On one GPU for CelebA:
+`CUDA_VISIBLE_DEVICES=0 python3 train.py --curriculum CelebA --output_dir celebAOutputDir`
 
 On multiple GPUs, simply list cuda visible devices in a comma-separated list:
-`CUDA_VISIBLE_DEVICES=1,3 python3 train.py --flag=value --flag=value ...`
+`CUDA_VISIBLE_DEVICES=1,3 python3 train.py --curriculum CelebA --output_dir celebAOutputDir`
 
-__To continue training from another run:__
-Specify the `--load_dir=path/to/directory` flag. See the "Relevant Flags" section for details.
+To continue training from another run specify the `--load_dir=path/to/directory` flag. 
 
-#### Evaluating a Model
-`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`
+## Model Results and Evaluation
 
-**Notes on Evaluation**
+#### Evaluation Metrics
+To generate real images for evaluation run
+`python fid_evaluation --dataset CelebA --img_size 128 --num_imgs 8000`.
+To calculate fid/kid/inception scores run
+`python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --curriculum CelebA --num_images 8000`.
 
-We log FID scores during training, but these should be used only to gauge rough performance. Run the separate evaluation script for a more accurate evaluation.
 
-Note that the number of images generated for evaluation has a huge impact on GAN metrics, particularly FID. Ensure that you compare all models with the same number of generated images.
-
-For evaluation, run the model at the *exact* settings the model was trained at (but use the EMA).
-
-#### Visualizing Images
-Render images of scenes from different angles.
-
-`python render_multiview_images.py path/to/generator.pth --seeds 0 1 2 3`
-
-Optionally, you can pass the flag `--lock_view_dependence` to remove view dependent effects.
+#### Rendering Images
+`python render_multiview_images.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
 For best visual results, load the EMA parameters, use truncation, increase the resolution (e.g. to 512 x 512) and increase the number of depth samples (e.g. to 24 or 36).
 
 #### Rendering Videos
-Render videos of scenes.
+`python render_video.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
-`python render_video.py path/to/generator.pth --seeds 0 1 2 3`
+You can pass the flag `--lock_view_dependence` to remove view dependent effects. This can help mitigate distracting visual artifacts such as shifting eyebrows. However, locking view dependence may lower the visual quality of images (edges may be blurrier etc.)
 
-Optionally, you can pass the flag `--lock_view_dependence` to remove view dependent effects. This can help mitigate distracting visual artifacts such as shifting eyebrows. However, locking view dependence may lower the visual quality of images (edges may be blurrier etc.)
+#### Rendering Videos Interpolating between faces
+`python render_video_interpolation.py path/to/generator.pth --curriculum CelebA --seeds 0 1 2 3`
 
-#### Extracting Shapes
+#### Extracting 3D Shapes
 
-Extract the 3D shape of a scene by running the following:
+`python3 shape_extraction.py path/to/generator.pth --curriculum CelebA --seed 0`
 
-`python3 shape_extraction.py path/to/generator.pth --seed 0`
+## Pretrained Models
+We provide pretrained models for CelebA, Cats, and CARLA.
 
-This will export the scene as a .mrc file. Visualize the shape by downloading ChimeraX, loading in the mrc, and setting the level to ~10. Alternatively, you can treat the .mrc file as a 256 x 256 x 256 occupancy cube and run marching cubes.
+CelebA: https://drive.google.com/file/d/1bRB4-KxQplJryJvqyEa8Ixkf_BVm4Nn6/view?usp=sharing
 
-#### Inverse Rendering
-Need to clean this up. Let me know if you want the messy code.
+Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp=sharing
 
-#### Changes/additions since original implementation
+CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
-1. Added experimental pose identity loss. Controlled by pos_lambda in the curriculum, helps ensure generated scenes share the same canonical pose. Empirically, it seems to improve 3D models, but may introduce a minor decrease in image quality scores.
+All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. All evaluation scripts will by default load the EMA from the file named `ema.pth` in the same directory as the generator.pth file.
 
-2. Added script for latent code interpolation in W-space.
-
-3. Added options for truncation, following implementation in StyleGAN.
-
-4. Tweaks to hyperparmeters, e.g. learning rate and initialization. Should result in improved evaluation metrics.
-
-
-### Training Tips
+## Training Tips
 
 If you have the resources, increasing the number of samples (steps) per ray will dramatically increase the quality of your 3D shapes. If you're looking for good shapes, e.g. for CelebA, try increasing num_steps and moving the back plane (ray_end) to allow the model to move the background back and capture the full head.
 
 Training has been tested to work well on either two RTX 6000's or one RTX 8000. Training with smaller GPU's and batch sizes generally works fine, but it's also possible you'll encounter instability, especially at higher resolutions. Bubbles and artifacts that suddenly appear, or blurring in the tilted angles, are signs that training destabilized. This can usually be mitigated by training with a larger batch size or by reducing the learning rate.
+
+Since the original implementation we added a pose identity component to the loss. Controlled by pos_lambda in the curriculum, the pose idedntity component helps ensure generated scenes share the same canonical pose. Empirically, it seems to improve 3D models, but may introduce a minor decrease in image quality scores.
+
+## Citation
+
+If you find our work useful in your research, please cite:
+```
+@inproceedings{piGAN2021,
+  title={pi-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis},
+  author={Eric Chan and Marco Monteiro and Petr Kellnhofer and Jiajun Wu and Gordon Wetzstein},
+  year={2021},
+  booktitle={Proc. CVPR},
+}
+```
