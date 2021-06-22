@@ -1,11 +1,15 @@
-# π-GAN
+# π-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis
 ### [Project Page](https://marcoamonteiro.github.io/pi-GAN-website/) | [Paper](https://arxiv.org/pdf/2012.00926.pdf) | [Data]()
 [Eric Ryan Chan](https://ericryanchan.github.io/about.html)\*,
 [Marco Monteiro]()\*,
 [Petr Kellnhofer](https://kellnhofer.xyz/),
-[Jiajun Wu](https://jiajunwu.com/)<br>
+[Jiajun Wu](https://jiajunwu.com/),
 [Gordon Wetzstein](https://stanford.edu/~gordonwz/)<br>
 \*denotes equal contribution
+
+This is the official implementation of the paper "π-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis".
+
+π-GAN is a novel generative model for high-quality 3D aware image synthesis.
 
 https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9621-1e176db59352.mp4
 
@@ -61,7 +65,7 @@ You can pass the flag `--lock_view_dependence` to remove view dependent effects.
 `python3 shape_extraction.py path/to/generator.pth --seed 0`
 
 ## Pretrained Models
-Here are pretrained models for CelebA, Cats, and CARLA models
+We provide pretrained models for CelebA, Cats, and CARLA models
 
 CelebA: 
 
