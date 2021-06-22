@@ -3,9 +3,9 @@
 
 https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9621-1e176db59352.mp4
 
-### Training a Model
+## Training a Model
 
-The main training script can be found in train.py, and may be called via cli.
+The main training script can be found in train.py.
 
 ##### Relevant Flags:
 
@@ -30,10 +30,9 @@ On one GPU:
 On multiple GPUs, simply list cuda visible devices in a comma-separated list:
 `CUDA_VISIBLE_DEVICES=1,3 python3 train.py --flag=value --flag=value ...`
 
-__To continue training from another run:__
-Specify the `--load_dir=path/to/directory` flag. See the "Relevant Flags" section for details.
+To continue training from another runspecify the `--load_dir=path/to/directory` flag. 
 
-### Model Results and Evaluation
+## Model Results and Evaluation
 
 #### Evaluation Metrics
 `python eval_metrics.py path/to/generator.pth --real_image_dir path/to/real_images/directory --num_images 8000`
@@ -51,23 +50,18 @@ You can pass the flag `--lock_view_dependence` to remove view dependent effects.
 #### Rendering Videos Interpolating between faces
 `python render_video_interpolation.py path/to/generator.pth --seeds 0 1 2 3`
 
-#### Extracting Shapes
-
-Extract the 3D shape of a scene by running the following:
+#### Extracting 3D Shapes
 
 `python3 shape_extraction.py path/to/generator.pth --seed 0`
 
-#### Inverse Rendering
-Need to clean this up. Let me know if you want the messy code.
-
-### Pretrained Models
+## Pretrained Models
 Here are pretrained models for CelebA, Cats, and CARLA models
 
 CelebA: 
 Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp=sharing
 CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
-All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999. 
+All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999.
 
 #### Changes/additions since original implementation
 
