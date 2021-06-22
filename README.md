@@ -95,3 +95,15 @@ All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema
 If you have the resources, increasing the number of samples (steps) per ray will dramatically increase the quality of your 3D shapes. If you're looking for good shapes, e.g. for CelebA, try increasing num_steps and moving the back plane (ray_end) to allow the model to move the background back and capture the full head.
 
 Training has been tested to work well on either two RTX 6000's or one RTX 8000. Training with smaller GPU's and batch sizes generally works fine, but it's also possible you'll encounter instability, especially at higher resolutions. Bubbles and artifacts that suddenly appear, or blurring in the tilted angles, are signs that training destabilized. This can usually be mitigated by training with a larger batch size or by reducing the learning rate.
+
+## Citation
+
+If you find our work useful in your research, please cite:
+```
+@inproceedings{piGAN2021,
+  title={pi-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis},
+  author={Eric Chan and Marco Monteiro and Petr Kellnhofer and Jiajun Wu and Gordon Wetzstein},
+  year={2021},
+  booktitle={Proc. CVPR},
+}
+```
