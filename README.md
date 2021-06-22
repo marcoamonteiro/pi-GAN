@@ -1,5 +1,11 @@
 # π-GAN
-
+### [Project Page](https://marcoamonteiro.github.io/pi-GAN-website/) | [Paper](https://arxiv.org/pdf/2012.00926.pdf) | [Data]()
+[Eric Ryan Chan](https://ericryanchan.github.io/about.html)\*,
+[Marco Monteiro]()\*,
+[Petr Kellnhofer](https://kellnhofer.xyz/),
+[Jiajun Wu](https://jiajunwu.com/)<br>
+[Gordon Wetzstein](https://stanford.edu/~gordonwz/)<br>
+\*denotes equal contribution
 
 https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9621-1e176db59352.mp4
 
@@ -30,7 +36,7 @@ On one GPU:
 On multiple GPUs, simply list cuda visible devices in a comma-separated list:
 `CUDA_VISIBLE_DEVICES=1,3 python3 train.py --flag=value --flag=value ...`
 
-To continue training from another runspecify the `--load_dir=path/to/directory` flag. 
+To continue training from another run specify the `--load_dir=path/to/directory` flag. 
 
 ## Model Results and Evaluation
 
