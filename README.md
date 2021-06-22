@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/9628319/122865841-e2d1c080-d2db-11eb-9
 
 ## Training a Model
 
-The main training script can be found in train.py. Majority of hyperparameters for training and evaluation are set in the curriculums.py file. (see file for more details) We provide curriculums recommended for CelebA, Cats, and CARLA.
+The main training script can be found in train.py. Majority of hyperparameters for training and evaluation are set in the curriculums.py file. (see file for more details) We provide recommended curriculums for CelebA, Cats, and CARLA.
 
 ##### Relevant Flags:
 
