@@ -58,7 +58,9 @@ You can pass the flag `--lock_view_dependence` to remove view dependent effects.
 Here are pretrained models for CelebA, Cats, and CARLA models
 
 CelebA: 
+
 Cats: https://drive.google.com/file/d/1WBA-WI8DA7FqXn7__0TdBO0eO08C_EhG/view?usp=sharing
+
 CARLA: https://drive.google.com/file/d/1n4eXijbSD48oJVAbAV4hgdcTbT3Yv4xO/view?usp=sharing
 
 All zipped model files contain a generator.pth, ema.pth, and ema2.pth files. ema.pth used a decay of 0.999 and ema2.pth used a decay of 0.9999.
