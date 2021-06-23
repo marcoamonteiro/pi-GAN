@@ -25,7 +25,7 @@ parser.add_argument('--max_batch_size', type=int, default=2400000)
 parser.add_argument('--depth_map', action='store_true')
 parser.add_argument('--lock_view_dependence', action='store_true')
 parser.add_argument('--image_size', type=int, default=256)
-parser.add_argument('--ray_steps', type=int, default=36)
+parser.add_argument('--ray_step_multiplier', type=int, default=2)
 parser.add_argument('--num_frames', type=int, default=36)
 parser.add_argument('--curriculum', type=str, default='CelebA')
 parser.add_argument('--trajectory', type=str, default='front')
@@ -34,12 +34,13 @@ opt = parser.parse_args()
 os.makedirs(opt.output_dir, exist_ok=True)
 
 curriculum = getattr(curriculums, opt.curriculum)
-curriculum['num_steps'] = opt.ray_steps
+curriculum['num_steps'] = curriculum[0]['num_steps'] * opt.ray_step_multiplier
 curriculum['img_size'] = opt.image_size
 curriculum['psi'] = 0.7
 curriculum['v_stddev'] = 0
 curriculum['h_stddev'] = 0
 curriculum['lock_view_dependence'] = opt.lock_view_dependence
+curriculum['last_back'] = curriculum.get('eval_last_back', False)
 curriculum['num_frames'] = opt.num_frames
 curriculum['nerf_noise'] = 0
 curriculum = {key: value for key, value in curriculum.items() if type(key) is str}
@@ -68,7 +69,7 @@ if opt.trajectory == 'front':
 elif opt.trajectory == 'orbit':
     trajectory = []
     for t in np.linspace(0, 1, curriculum['num_frames']):
-        pitch = (t * 0) + (1 - t) * (math.pi/2)
+        pitch = math.pi/4
         yaw = t * 2 * math.pi
         fov = curriculum['fov']
 

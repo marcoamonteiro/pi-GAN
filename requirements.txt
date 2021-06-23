@@ -98,16 +98,14 @@ tensorboard==2.4.1
 tensorboard-plugin-wit==1.8.0
 terminado==0.9.3
 testpath==0.4.4
-torch==1.9.0.dev20210322+cu111
-torch-ema==0.2
+torch==1.9.0
+-e git://github.com/fadel/pytorch_ema.git#egg=torch-ema
 torch-fidelity==0.2.0
-torchaudio==0.9.0.dev20210323
-torchvision==0.9.0
 tornado==6.1
 tqdm==4.48.2
 traitlets==5.0.5
-traits==6.1.1
-traitsui==7.0.1
+traits
+traitsui
 typing-extensions==3.7.4.3
 urllib3==1.25.10
 wcwidth==0.2.5
