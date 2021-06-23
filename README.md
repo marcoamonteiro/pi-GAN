@@ -1,7 +1,7 @@
 # π-GAN: Periodic Implicit Generative Adversarial Networks for 3D-Aware Image Synthesis
 ### [Project Page](https://marcoamonteiro.github.io/pi-GAN-website/) | [Paper](https://arxiv.org/pdf/2012.00926.pdf) | [Data]()
 [Eric Ryan Chan](https://ericryanchan.github.io/about.html)\*,
-[Marco Monteiro]()\*,
+[Marco Monteiro](https://twitter.com/MonteiroAMarco)\*,
 [Petr Kellnhofer](https://kellnhofer.xyz/),
 [Jiajun Wu](https://jiajunwu.com/),
 [Gordon Wetzstein](https://stanford.edu/~gordonwz/)<br>
