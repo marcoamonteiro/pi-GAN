@@ -40,18 +40,18 @@ if __name__ == '__main__':
     parser.add_argument('--max_batch_size', type=int, default=2400000)
     parser.add_argument('--lock_view_dependence', action='store_true')
     parser.add_argument('--image_size', type=int, default=256)
-    parser.add_argument('--ray_steps', type=int, default=36)
-    parser.add_argument('--curriculum', type=str, default='CELEBA')
+    parser.add_argument('--ray_step_multiplier', type=int, default=2)
+    parser.add_argument('--curriculum', type=str, default='CelebA')
     opt = parser.parse_args()
 
     curriculum = getattr(curriculums, opt.curriculum)
-    curriculum['num_steps'] = opt.ray_steps
+    curriculum['num_steps'] = curriculum[0]['num_steps'] * opt.ray_step_multiplier
     curriculum['img_size'] = opt.image_size
     curriculum['psi'] = 0.7
     curriculum['v_stddev'] = 0
     curriculum['h_stddev'] = 0
     curriculum['lock_view_dependence'] = opt.lock_view_dependence
-    curriculum['last_back'] = True
+    curriculum['last_back'] = curriculum.get('eval_last_back', False)
     curriculum['nerf_noise'] = 0
     curriculum = {key: value for key, value in curriculum.items() if type(key) is str}
     
@@ -75,6 +75,5 @@ if __name__ == '__main__':
             torch.manual_seed(seed)
             z = torch.randn((1, 256), device=device)
             img, tensor_img, depth_map = generate_img(generator, z, **curriculum)
-            save_image(tensor_img, os.path.join(opt.output_dir, f"img_{seed}_{yaw}_.png"), normalize=True)
             images.append(tensor_img)
         save_image(torch.cat(images), os.path.join(opt.output_dir, f'grid_{seed}.png'), normalize=True)
