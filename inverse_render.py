@@ -106,7 +106,7 @@ for i in range(n_iterations):
     noise_w_frequencies = 0.03 * torch.randn_like(w_frequencies) * (n_iterations - i)/n_iterations
     noise_w_phase_shifts = 0.03 * torch.randn_like(w_phase_shifts) * (n_iterations - i)/n_iterations
     frame, _ = generator.forward_with_frequencies(w_frequencies + noise_w_frequencies + w_frequency_offsets, w_phase_shifts + noise_w_phase_shifts + w_phase_shift_offsets, **options)
-    loss = torch.nn.L1Loss()(frame, gt_image)
+    loss = torch.nn.MSELoss()(frame, gt_image)
     loss = loss.mean()
     
 
