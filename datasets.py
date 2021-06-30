@@ -18,10 +18,10 @@ import numpy as np
 class CelebA(Dataset):
     """CelelebA Dataset"""
 
-    def __init__(self, img_size, **kwargs):
+    def __init__(self, dataset_path, img_size, **kwargs):
         super().__init__()
 
-        self.data = glob.glob('/home/ericryanchan/data/celeba/img_align_celeba/*.jpg')
+        self.data = glob.glob(dataset_path)
         assert len(self.data) > 0, "Can't find data; make sure you specify the path to your dataset"
         self.transform = transforms.Compose(
                     [transforms.Resize(320), transforms.CenterCrop(256), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.RandomHorizontalFlip(p=0.5), transforms.Resize((img_size, img_size), interpolation=0)])
@@ -38,10 +38,10 @@ class CelebA(Dataset):
 class Cats(Dataset):
     """Cats Dataset"""
 
-    def __init__(self, img_size, **kwargs):
+    def __init__(self, dataset_path, img_size, **kwargs):
         super().__init__()
         
-        self.data = glob.glob('/home/marcorm/S-GAN/data/cats_bigger_than_128x128/*.jpg')
+        self.data = glob.glob(dataset_path)
         assert len(self.data) > 0, "Can't find data; make sure you specify the path to your dataset"
         self.transform = transforms.Compose(
                     [transforms.Resize((img_size, img_size), interpolation=0), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.RandomHorizontalFlip(p=0.5)])
@@ -57,10 +57,10 @@ class Cats(Dataset):
 class Carla(Dataset):
     """Carla Dataset"""
 
-    def __init__(self, img_size, **kwargs):
+    def __init__(self, dataset_path, img_size, **kwargs):
         super().__init__()
         
-        self.data = glob.glob('/home/ericryanchan/graf-beta/data/carla/carla/*.png')
+        self.data = glob.glob(dataset_path)
         assert len(self.data) > 0, "Can't find data; make sure you specify the path to your dataset"
         self.transform = transforms.Compose(
                     [transforms.Resize((img_size, img_size), interpolation=0), transforms.ToTensor(), transforms.Normalize([0.5], [0.5])])

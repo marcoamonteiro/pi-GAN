@@ -86,6 +86,7 @@ CelebA = {
     0: {'batch_size': 28 * 2, 'num_steps': 12, 'img_size': 64, 'batch_split': 2, 'gen_lr': 6e-5, 'disc_lr': 2e-4},
     int(200e3): {},
 
+    'dataset_path': '/home/ericryanchan/data/celeba/img_align_celeba/*.jpg',
     'fov': 12,
     'ray_start': 0.88,
     'ray_end': 1.12,
@@ -122,6 +123,7 @@ CARLA = {
     int(55e3): {'batch_size': 10, 'num_steps': 48, 'img_size': 128, 'batch_split': 5, 'gen_lr': 10e-6, 'disc_lr': 10e-5},
     int(200e3): {},
 
+    'dataset_path': '/home/marcorm/S-GAN/data/cats_bigger_than_128x128/*.jpg',
     'fov': 30,
     'ray_start': 0.7,
     'ray_end': 1.3,
@@ -159,6 +161,7 @@ CATS = {
     int(200e3): {},
 
 
+    'dataset_path': '/home/ericryanchan/graf-beta/data/carla/carla/*.png',
     'fov': 12,
     'ray_start': 0.8,
     'ray_end': 1.2,

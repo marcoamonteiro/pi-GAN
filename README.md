@@ -34,6 +34,8 @@ Set the port for distributed training:
 
 ##### To start training:
 
+Update the `dataset_path` field in the curriculum to point to your images.
+
 On one GPU for CelebA:
 `CUDA_VISIBLE_DEVICES=0 python3 train.py --curriculum CelebA --output_dir celebAOutputDir`
 
@@ -66,7 +68,7 @@ You can pass the flag `--lock_view_dependence` to remove view dependent effects.
 
 #### Extracting 3D Shapes
 
-`python3 shape_extraction.py path/to/generator.pth --curriculum CelebA --seed 0`
+`python extract_shapes.py path/to/generator.pth --curriculum CelebA --seed 0`
 
 ## Pretrained Models
 We provide pretrained models for CelebA, Cats, and CARLA.
