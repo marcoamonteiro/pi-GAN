@@ -20,7 +20,7 @@ Curriculum Schema:
     h_stddev: Stddev of camera yaw in radians.
     v_stddev: Stddev of camera pitch in radians.
     h_mean:  Mean of camera yaw in radians.
-    v_mean: Mean of camera yaw in radians.
+    v_mean: Mean of camera pitch in radians.
     sample_dist: Type of camera pose distribution. (gaussian | spherical_uniform | uniform)
     topk_interval: Interval over which to fade the top k ratio.
     topk_v: Minimum fraction of a batch to keep during top k training.
