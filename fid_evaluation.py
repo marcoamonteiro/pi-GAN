@@ -39,8 +39,8 @@ def setup_evaluation(dataset_name, generated_dir, target_size=128, num_imgs=8000
         output_real_images(dataloader, num_imgs, real_dir)
         print('...done')
 
-    if generated_dir is not None:
-        os.makedirs(generated_dir, exist_ok=True)
+    # if generated_dir is not None:
+    #     os.makedirs(generated_dir, exist_ok=True)
     return real_dir
 
 def output_images(generator, input_metadata, rank, world_size, output_dir, num_imgs=2048):
