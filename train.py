@@ -361,7 +361,8 @@ def train(rank, world_size, opt):
                     os.makedirs(generated_dir, exist_ok=True)
 
                 if rank == 0:
-                    fid_evaluation.setup_evaluation(metadata['dataset'], generated_dir, target_size=128)
+                    # fid_evaluation.setup_evaluation(metadata['dataset'], generated_dir, target_size=128)
+                    fid_evaluation.setup_evaluation(metadata, generated_dir, target_size=128)
                 dist.barrier()
                 ema.store(generator_ddp.parameters())
                 ema.copy_to(generator_ddp.parameters())
