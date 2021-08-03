@@ -357,9 +357,12 @@ def train(rank, world_size, opt):
 
             if opt.eval_freq > 0 and (discriminator.step + 1) % opt.eval_freq == 0:
                 generated_dir = os.path.join(opt.output_dir, 'evaluation/generated')
+                if generated_dir is not None:
+                    os.makedirs(generated_dir, exist_ok=True)
 
                 if rank == 0:
-                    fid_evaluation.setup_evaluation(metadata['dataset'], generated_dir, target_size=128)
+                    # fid_evaluation.setup_evaluation(metadata['dataset'], generated_dir, target_size=128)
+                    fid_evaluation.setup_evaluation(metadata, generated_dir, target_size=128)
                 dist.barrier()
                 ema.store(generator_ddp.parameters())
                 ema.copy_to(generator_ddp.parameters())
