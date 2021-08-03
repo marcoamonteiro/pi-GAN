@@ -29,12 +29,13 @@ def output_real_images(dataloader, num_imgs, real_dir):
             save_image(img, os.path.join(real_dir, f'{img_counter:0>5}.jpg'), normalize=True, range=(-1, 1))
             img_counter += 1
 
-def setup_evaluation(dataset_name, generated_dir, target_size=128, num_imgs=8000):
+def setup_evaluation(metadata, generated_dir, target_size=128, num_imgs=8000):
     # Only make real images if they haven't been made yet
-    real_dir = os.path.join('EvalImages', dataset_name + '_real_images_' + str(target_size))
+    real_dir = os.path.join('EvalImages', metadata['dataset'] + '_real_images_' + str(target_size))
     if not os.path.exists(real_dir):
         os.makedirs(real_dir)
-        dataloader, CHANNELS = datasets.get_dataset(dataset_name, img_size=target_size)
+        # dataloader, CHANNELS = datasets.get_dataset(metadata['dataset'], img_size=target_size)
+        dataloader, CHANNELS = datasets.get_dataset(metadata['dataset'], **metadata)
         print('outputting real images...')
         output_real_images(dataloader, num_imgs, real_dir)
         print('...done')
