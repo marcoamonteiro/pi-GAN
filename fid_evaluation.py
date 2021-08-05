@@ -29,12 +29,12 @@ def output_real_images(dataloader, num_imgs, real_dir):
             save_image(img, os.path.join(real_dir, f'{img_counter:0>5}.jpg'), normalize=True, range=(-1, 1))
             img_counter += 1
 
-def setup_evaluation(dataset_name, generated_dir, target_size=128, num_imgs=8000):
+def setup_evaluation(dataset_name, generated_dir, dataset_path, target_size=128, num_imgs=8000):
     # Only make real images if they haven't been made yet
     real_dir = os.path.join('EvalImages', dataset_name + '_real_images_' + str(target_size))
     if not os.path.exists(real_dir):
         os.makedirs(real_dir)
-        dataloader, CHANNELS = datasets.get_dataset(dataset_name, img_size=target_size)
+        dataloader, CHANNELS = datasets.get_dataset(dataset_name, img_size=target_size, dataset_path=dataset_path)
         print('outputting real images...')
         output_real_images(dataloader, num_imgs, real_dir)
         print('...done')
@@ -79,9 +79,10 @@ def calculate_fid(dataset_name, generated_dir, target_size=256):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='CelebA')
+     parser.add_argument('--dataset_path', type=str, default='/xxx/img_celeba/img_align_celeba_png/*.png')
     parser.add_argument('--img_size', type=int, default=128)
     parser.add_argument('--num_imgs', type=int, default=8000)
 
     opt = parser.parse_args()
 
-    real_images_dir = setup_evaluation(opt.dataset, None, target_size=opt.img_size, num_imgs=opt.num_imgs)
+    real_images_dir = setup_evaluation(opt.dataset, None, dataset_path=opt.dataset_path, target_size=opt.img_size, num_imgs=opt.num_imgs)
