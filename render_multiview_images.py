@@ -67,6 +67,7 @@ if __name__ == '__main__':
     face_angles = [-0.5, -0.25, 0., 0.25, 0.5]
 
     face_angles = [a + curriculum['h_mean'] for a in face_angles]
+    curriculum['v_mean'] -= 0.5
 
     for seed in tqdm(opt.seeds):
         images = []
@@ -76,4 +77,5 @@ if __name__ == '__main__':
             z = torch.randn((1, 256), device=device)
             img, tensor_img, depth_map = generate_img(generator, z, **curriculum)
             images.append(tensor_img)
+            print(tensor_img.shape)
         save_image(torch.cat(images), os.path.join(opt.output_dir, f'grid_{seed}.png'), normalize=True)
