@@ -198,6 +198,7 @@ def train(rank, world_size, opt):
             alpha = min(1, (discriminator.step - step_last_upsample) / (metadata['fade_steps']))
 
             real_imgs = imgs.to(device, non_blocking=True)
+            r_pos = r_pos.to(device, non_blocking=True)
 
             metadata['nerf_noise'] = max(0, 1. - discriminator.step/5000.)
 

@@ -25,7 +25,7 @@ class CelebA(Dataset):
         assert len(self.data) > 0, "Can't find data; make sure you specify the path to your dataset"
         self.transform = transforms.Compose(
                     [transforms.Resize(320), transforms.CenterCrop(256), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.RandomHorizontalFlip(p=0.5), transforms.Resize((img_size, img_size), interpolation=0)])
-        self.pose = np.load('celeba_pose.npy')
+        self.pose = torch.from_numpy(np.load('celeba_pose_float16.npy').T)
 
     def __len__(self):
         return len(self.data)
