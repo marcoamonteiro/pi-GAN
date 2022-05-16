@@ -178,6 +178,7 @@ def apply_affine_transformation(x, mat, up=4, **filter_kwargs):
 def apply_fractional_rotation(x, angle, a=3, **filter_kwargs):
     angle = torch.as_tensor(angle).to(dtype=torch.float32, device=x.device)
     mat = rotation_matrix(angle)
+    print(mat)
     return apply_affine_transformation(x, mat, a=a, amax=a*2, **filter_kwargs)
 
 #----------------------------------------------------------------------------
@@ -252,7 +253,6 @@ if __name__ == '__main__':
     face_angles = [-0.5, -0.25, 0.25, 0.5]
 
     face_angles = [a + curriculum['h_mean'] for a in face_angles]
-    curriculum['v_mean'] -= 0.5
     sums = None
     for seed in tqdm(opt.seeds):
         s = []
@@ -266,20 +266,19 @@ if __name__ == '__main__':
 
             curriculum['h_mean'] = yaw
             angle = yaw * np.pi
-
             _, img, _ = generate_img(generator, z, **curriculum)
             ref, ref_mask = apply_fractional_rotation(orig, angle)
             pseudo, pseudo_mask = apply_fractional_pseudo_rotation(img, angle)
 
             mask = ref_mask * pseudo_mask
             s += [(ref - pseudo).square() * mask, mask]
+
         s = torch.stack([x.to(torch.float64).sum() for x in s])
-        print(s)
         sums = sums + s if sums is not None else s
 
     sums = sums.cpu()
     mses = sums[0::2] / sums[1::2]
     psnrs = np.log10(2) * 20 - mses.log10() * 10
     psnrs = tuple(psnrs.numpy())
-    
+
     print(psnrs[0] if len(psnrs) == 1 else psnrs)

@@ -174,7 +174,7 @@ def train(rank, world_size, opt):
             interior_step_bar.set_description(f"Progress to next stage")
             interior_step_bar.update((discriminator.step - step_last_upsample))
 
-        for i, (imgs, _) in enumerate(dataloader):
+        for i, (imgs, r_pos) in enumerate(dataloader):
             if discriminator.step % opt.model_save_interval == 0 and rank == 0:
                 now = datetime.now()
                 now = now.strftime("%d--%H:%M--")
@@ -220,7 +220,7 @@ def train(rank, world_size, opt):
                     gen_positions = torch.cat(gen_positions, axis=0)
 
                 real_imgs.requires_grad = True
-                r_preds, _, _ = discriminator_ddp(real_imgs, alpha, **metadata)
+                r_preds, _, r_pred_pos = discriminator_ddp(real_imgs, alpha, **metadata)
 
             if metadata['r1_lambda'] > 0:
                 # Gradient penalty
@@ -237,7 +237,7 @@ def train(rank, world_size, opt):
                 g_preds, g_pred_latent, g_pred_position = discriminator_ddp(gen_imgs, alpha, **metadata)
                 if metadata['z_lambda'] > 0 or metadata['pos_lambda'] > 0:
                     latent_penalty = torch.nn.MSELoss()(g_pred_latent, z) * metadata['z_lambda']
-                    position_penalty = torch.nn.MSELoss()(g_pred_position, gen_positions) * metadata['pos_lambda']
+                    position_penalty = (torch.nn.MSELoss()(g_pred_position, gen_positions) + torch.nn.MSELoss()(r_pred_pos,r_pos)) * metadata['pos_lambda']
                     identity_penalty = latent_penalty + position_penalty
                 else:
                     identity_penalty=0
