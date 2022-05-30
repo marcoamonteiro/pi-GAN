@@ -2,3 +2,5 @@ imgs/
 pretrain/
 celebAOutputDir/
 *.pyc
+*.png
+output/

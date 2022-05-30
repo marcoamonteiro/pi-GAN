@@ -238,8 +238,13 @@ def train(rank, world_size, opt):
                 g_preds, g_pred_latent, g_pred_position = discriminator_ddp(gen_imgs, alpha, **metadata)
                 if metadata['z_lambda'] > 0 or metadata['pos_lambda'] > 0:
                     latent_penalty = torch.nn.MSELoss()(g_pred_latent, z) * metadata['z_lambda']
-                    position_penalty = (torch.nn.MSELoss()(g_pred_position, gen_positions) + torch.nn.MSELoss()(r_pred_pos,r_pos)) * metadata['pos_lambda']
-                    identity_penalty = latent_penalty + position_penalty
+                    position_penalty = torch.nn.MSELoss()(g_pred_position, gen_positions) * metadata['pos_lambda']
+                    if opt.position_loss and discriminator.epoch > 5:
+                        r_position_penalty = torch.nn.MSELoss()(r_pred_pos,r_pos) * metadata['pos_lambda']
+                        identity_penalty = latent_penalty + position_penalty + r_position_penalty
+                    else:
+                        identity_penalty = latent_penalty + position_penalty 
+                    
                 else:
                     identity_penalty=0
 
@@ -385,7 +390,7 @@ def train(rank, world_size, opt):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--n_epochs", type=int, default=3000, help="number of epochs of training")
-    parser.add_argument("--sample_interval", type=int, default=200, help="interval between image sampling")
+    parser.add_argument("--sample_interval", type=int, default=1000, help="interval between image sampling")
     parser.add_argument('--output_dir', type=str, default='debug')
     parser.add_argument('--load_dir', type=str, default='')
     parser.add_argument('--curriculum', type=str, required=True)
@@ -393,6 +398,7 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=str, default='12355')
     parser.add_argument('--set_step', type=int, default=None)
     parser.add_argument('--model_save_interval', type=int, default=5000)
+    parser.add_argument('--position_loss', type=bool, default=False)
 
     opt = parser.parse_args()
     print(opt)

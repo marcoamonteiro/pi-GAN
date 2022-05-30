@@ -64,22 +64,16 @@ if __name__ == '__main__':
     generator.set_device(device)
     generator.eval()
     
-    face_angles = [-0.5, -0.25, 0., 0.25, 0.5]
-    face_pitches = [-0.5, -0.25, 0, 0.25, 0.5]
+    face_angles = [-0.75,-0.6,-0.5, -0.25, 0., 0.25, 0.5,0.6]
 
     face_angles = [a + curriculum['h_mean'] for a in face_angles]
-    face_pitches = [a + curriculum['v_mean'] for a in face_pitches]
-    a = []
-    for seed in tqdm(opt.seeds):
-        
-        for i, yaw in enumerate(face_angles):
-            for j, pitch in enumerate(face_pitches):
-                curriculum['h_mean'] = yaw
-                curriculum['v_mean'] = pitch
 
-                torch.manual_seed(seed)
-                z = torch.randn((1, 256), device=device)
-                img, tensor_img, depth_map = generate_img(generator, z, **curriculum)
-                print(tensor_img.shape)
-                save_image(tensor_img.detach().cpu(), os.path.join(opt.output_dir, f'{seed}_{i}_{j}.png'), normalize=True)
-                a.append([yaw, pitch])
+    for seed in tqdm(opt.seeds):
+        images = []
+        for i, yaw in enumerate(face_angles):
+            curriculum['h_mean'] = yaw
+            torch.manual_seed(seed)
+            z = torch.randn((1, 256), device=device)
+            img, tensor_img, depth_map = generate_img(generator, z, **curriculum)
+            images.append(tensor_img)
+        save_image(torch.cat(images), os.path.join(opt.output_dir, f'grid_{seed}.png'), normalize=True)

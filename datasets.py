@@ -13,6 +13,7 @@ import random
 import math
 import pickle
 import numpy as np
+import random
 
 
 class CelebA(Dataset):
@@ -24,16 +25,24 @@ class CelebA(Dataset):
         self.data = sorted(glob.glob(dataset_path))
         assert len(self.data) > 0, "Can't find data; make sure you specify the path to your dataset"
         self.transform = transforms.Compose(
-                    [transforms.Resize(320), transforms.CenterCrop(256), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.RandomHorizontalFlip(p=0.5), transforms.Resize((img_size, img_size), interpolation=0)])
-        self.pose = torch.from_numpy(np.load('celeba_pose_float16.npy').T)
-
+                    [transforms.Resize(320), transforms.CenterCrop(256), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.Resize((img_size, img_size), interpolation=0)])
+        self.transform_flip = transforms.Compose(
+                    [transforms.Resize(320), transforms.CenterCrop(256), transforms.ToTensor(), transforms.Normalize([0.5], [0.5]), transforms.RandomHorizontalFlip(p=1), transforms.Resize((img_size, img_size), interpolation=0)])
+        
+        self.pose = torch.from_numpy(np.load('new_pose.npy').T)
+    
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, index):
         X = PIL.Image.open(self.data[index])
-        X = self.transform(X)
-        pose = self.pose[index]
+        if random.randint(0,2) == 0:
+            X = self.transform(X)
+            pose = self.pose[index]
+        else:
+            X = self.transform_flip(X)
+            pose = self.pose[index]
+            pose[0] = math.pi - pose[0]
         return X, pose
 
 class Cats(Dataset):
